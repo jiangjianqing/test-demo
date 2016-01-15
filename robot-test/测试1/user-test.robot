@@ -1,15 +1,15 @@
 *** Settings ***
 Library           HttpLibrary.HTTP
-Resource          ../restful-api-test.robot
+Resource          ../restful-api-test.txt
 
 *** Variables ***
-${useraddr}       /${site}/user
+${invalid_userid}    9999999
 ${host}           localhost:8181
 ${site}           webui.springdm.springsecurity
 
 *** Test Cases ***
 user_notfound
-    Entity Not Found    ${host}    ${site}    user    9999999
+    Entity Not Found    ${host}    ${site}    user    ${invalid_userid}
 
 user_found
     Entity Found    ${host}    ${site}    user    1
