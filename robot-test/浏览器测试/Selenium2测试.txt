@@ -1,0 +1,10 @@
+*** Settings ***
+Library           Selenium2Library
+
+*** Test Cases ***
+baidu_search
+    Open Browser    http://www.baidu.com
+    Input Text    id=kw    robot framework 学习
+    Click Button    id=su
+    sleep    5
+    Close Browser
