@@ -8,8 +8,8 @@ baidu_search
     ...    #命令行输入参数
     ...    -v testURL:http://www.baidu.com -v searchText:中文搜索
     ...
-    ...    #使用参数文件
-    ...    -V var.py
+    ...    #使用参数文件,路径要求是完整路径
+    ...    -V /home/ztxs/git/test/test-demo/robot-test/var.py
     ...
     ...    重要注意事项：
     ...    1、命令行参数中不能空格，其他形式的参数定义都不受影响
