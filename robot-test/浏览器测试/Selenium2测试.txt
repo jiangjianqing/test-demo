@@ -6,13 +6,13 @@ baidu_search
     [Documentation]    演示了命令行参数和外部参数文件的使用，命令行参数如下：
     ...
     ...    #命令行输入参数
-    ...    -v testURL:http://www.baidu.com -v searchText:中文搜索
+    ...    -v testURL:http://www.baidu.com -v searchText:中文搜索_12312 --escape space:_
     ...
     ...    #使用参数文件,路径要求是完整路径
     ...    -V /home/ztxs/git/test/test-demo/robot-test/var.py
     ...
     ...    重要注意事项：
-    ...    1、命令行参数中不能空格，其他形式的参数定义都不受影响
+    ...    1、命令行参数中使用空格等特殊字符需要转意（如上例）
     ...    2、参数文件中的值使用中文时前面要加u标注，否则无法处理
     Open Browser    ${testURL}
     Comment    最大化浏览器窗口
