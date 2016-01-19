@@ -1,11 +1,15 @@
 *** Settings ***
 Library           Selenium2Library
-Variables         ../var.py
 
 *** Test Cases ***
 baidu_search
     [Documentation]    演示了命令行参数和外部参数文件的使用，命令行参数如下：
+    ...
+    ...    #命令行输入参数
     ...    -v testURL:http://www.baidu.com -v searchText:中文搜索
+    ...
+    ...    #使用参数文件
+    ...    -V var.py
     ...
     ...    重要注意事项：
     ...    1、命令行参数中不能空格，其他形式的参数定义都不受影响
