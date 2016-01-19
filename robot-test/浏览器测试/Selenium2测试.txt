@@ -1,10 +1,19 @@
 *** Settings ***
 Library           Selenium2Library
+Variables         ../var.py
 
 *** Test Cases ***
 baidu_search
-    Open Browser    http://www.baidu.com
-    Input Text    id=kw    robot framework 学习
+    [Documentation]    演示了命令行参数和外部参数文件的使用，命令行参数如下：
+    ...    -v testURL:http://www.baidu.com -v searchText:中文搜索
+    ...
+    ...    重要注意事项：
+    ...    1、命令行参数中不能空格，其他形式的参数定义都不受影响
+    ...    2、参数文件中的值使用中文时前面要加u标注，否则无法处理
+    Open Browser    ${testURL}
+    Comment    最大化浏览器窗口
+    Maximize Browser Window
+    Input Text    id=kw    ${searchText}
     Click Button    id=su
     sleep    5
     Close Browser

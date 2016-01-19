@@ -1,0 +1,19 @@
+*** Keywords ***
+Generate Random String
+    [Arguments]    ${len}    ${charset}=    # 生成随机字符串
+    ${default_charset}    Evaluate    string.ascii_letters    string
+    comment    如果没有输入charset，则使用default_charset
+    ${charset}    set variable if    len('${charset}')==0    ${default_charset}    ${charset}
+    ${charset_len}    Evaluate    len('${charset}')
+    ${new_str}    Set Variable
+    : FOR    ${i}    IN RANGE    ${len}
+    \    ${rnd_int}    Evaluate    random.randint(0,int('${charset_len}')-1)    random
+    \    ${rnd_char}    Set Variable    ${charset[int('${rnd_int}')]}
+    \    ${new_str}    Set Variable    ${new_str}${rnd_char}
+    [Return]    ${new_str}    # 返回随机生成的字符串
+
+Generate Date String
+    [Documentation]    生成指定格式的日期字符串
+    ${year}    ${month}    ${day}    get time    year month day
+    ${date_str}    set variable    ${year}-${month}-${day}
+    [Return]    ${date_str}

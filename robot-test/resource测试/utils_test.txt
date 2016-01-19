@@ -1,0 +1,22 @@
+*** Settings ***
+Resource          ../utils.txt
+
+*** Test Cases ***
+random1
+    ${abc}    Generate Random String    5    ffewttyjtyutuyryr
+    Log    ${abc}
+
+evaluate test
+    ${os}    evaluate    os.name    os
+    ${sys}    evaluate    sys.platform    sys
+    comment    os执行系统命令    os.system('dir')
+    ${a}    evaluate    os.system('ls -al')    os
+
+time test
+    @{time1}    get time    year month day hour minute second
+    ${year}    ${month}    ${day}    get time    year month day
+    ${time2}    set variable    ${year}-${month}-${day}
+    ${time3}    get time    YYYY-MM-DD hh:mm:ss
+    ${time4}    utils.generate date string
+    ${time5}    Get Time    YYYY-MM-DD,hh:mm:ss    now+2day
+    ${time6}    evaluate    '${time5}'.split(' ')

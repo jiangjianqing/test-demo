@@ -1,11 +1,10 @@
 *** Settings ***
 Library           HttpLibrary.HTTP
 Resource          ../restful-api-test.txt
+Variables         ../var.py
 
 *** Variables ***
 ${invalid_userid}    9999999
-${host}           localhost:8181
-${site}           webui.springdm.springsecurity
 
 *** Test Cases ***
 user_notfound
