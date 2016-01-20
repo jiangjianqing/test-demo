@@ -1,0 +1,15 @@
+*** Settings ***
+Library           DatabaseLibrary
+
+*** Test Cases ***
+mysql_test
+    ${code}    Evaluate    reload(sys)    sys
+    ${code}    Evaluate    sys.getdefaultencoding()    sys
+    Connect To DataBase using Custom Params    pymysql    database='test', user='root', password='', host='localhost', port=3306,charset="utf8"
+    ${table_name}    Set Variable    sys_users
+    Table Must Exist    ${table_name}
+    ${a}    Query    select * from ${table_name}
+    ${b}    Set Variable    ${a[0][7]}
+    ${c}    Evaluate    '${b}'=='新用户'
+    Log    ${b}.decode('gb2312')
+    Disconnect From Database

@@ -9,9 +9,10 @@ Entity Found
     GET    ${base_addr}
     ${response_status}=    Get Response Status
     Should Start With    ${response_status}    200
-    ${user}=    Get Response Body
+    ${body}=    Get Response Body
     ${test_status}    Set Variable    执行成功
     Log    执行成功
+    [Return]    ${body}
 
 Entity Not Found
     [Arguments]    ${host}    ${site}    ${entity_name}    ${entity_id}
@@ -23,3 +24,40 @@ Entity Not Found
     Should Start With    ${response_status}    404
     ${user}=    Get Response Body
     ${test_status}    Set Variable    执行成功
+
+Add Entity
+    [Arguments]    ${host}    ${site}    ${entity_name}    ${request_body}
+    [Documentation]    常规的POST提交方式,要求输入的request_body格式为：
+    ...    username=中文测试&password=111111
+    Log    该方法不要调用，标记为deprecated
+    Create Http Context    ${host}
+    ${base_addr}    Set Variable    /${site}/${entity_name}
+    Set Request Body    ${request_body}
+    POST    ${base_addr}
+    ${response_status}=    Get Response Status
+
+Entity Replicated
+    [Arguments]    ${host}    ${site}    ${entity_name}    ${entity_id}
+    ${old_entity}    Entity Found    ${host}    ${site}    ${entity_name}    ${entity_id}
+    ${name}    Get Json Value    ${old_entity}    /username
+    ${password}    Get Json Value    ${old_entity}    /password
+    ${request_body}    Set Variable    {"username":${name},"password":${password}}
+    Add Entity By Json    ${host}    ${site}    ${entity_name}    ${request_body}
+
+Add Entity By Json
+    [Arguments]    ${host}    ${site}    ${entity_name}    ${request_body}
+    [Documentation]    支持服务器端使用@RequestBody处理输入数据，可以减少代码量,要求request_body的格式为一个json字符串
+    Create Http Context    ${host}
+    ${base_addr}    Set Variable    /${site}/${entity_name}
+    Set Request Header    Content-Type    application/json
+    Set Request Body    ${request_body}
+    POST    ${base_addr}
+    ${response_status}=    Get Response Status
+
+Delete Entity
+    [Arguments]    ${host}    ${site}    ${entity_name}    ${entity_id}
+    Create Http Context    ${host}
+    ${base_addr}    Set Variable    /${site}/${entity_name}/${entity_id}
+    DELETE    ${base_addr}
+    ${response_status}=    Get Response Status
+    Response Status Code Should Equal    200
