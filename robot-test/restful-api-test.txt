@@ -29,6 +29,7 @@ Add Entity
     [Arguments]    ${host}    ${site}    ${entity_name}    ${request_body}
     [Documentation]    常规的POST提交方式,要求输入的request_body格式为：
     ...    username=中文测试&password=111111
+    [Tags]    deprecated
     Log    该方法不要调用，标记为deprecated
     Create Http Context    ${host}
     ${base_addr}    Set Variable    /${site}/${entity_name}
@@ -53,6 +54,9 @@ Add Entity By Json
     Set Request Body    ${request_body}
     POST    ${base_addr}
     ${response_status}=    Get Response Status
+    ${response_body}    Get Response Body
+    Should Be Valid Json    ${response_body}
+    [Return]    ${response_body}
 
 Delete Entity
     [Arguments]    ${host}    ${site}    ${entity_name}    ${entity_id}
@@ -61,3 +65,8 @@ Delete Entity
     DELETE    ${base_addr}
     ${response_status}=    Get Response Status
     Response Status Code Should Equal    200
+    Log    下一步一定要FAIL才行
+    Comment    重要内容    使用Run Keyword And Expect Error    预期该步骤执行失败
+    ${error_msg}    Run Keyword And Expect Error    *    Entity Found    ${host}    ${site}    ${entity_name}
+    ...    ${entity_id}
+    ${find}    Entity Not Found    ${host}    ${site}    ${entity_name}    ${entity_id}

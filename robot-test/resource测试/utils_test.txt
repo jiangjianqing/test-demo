@@ -20,3 +20,16 @@ time test
     ${time4}    utils.generate date string
     ${time5}    Get Time    YYYY-MM-DD,hh:mm:ss    now+2day
     ${time6}    evaluate    '${time5}'.split(' ')
+
+find index test
+    @{list1}    Create List    123    456    abc
+    Log Variables
+    ${index}    Find List Index    abc    @{list1}
+    Comment    Log    设定name变量指向另一个index变量，类似别名效果
+    ${Name}    Set Variable    \${index}
+    Log    ${Name}
+    Set Test Variable    ${Name}    Value
+    Log    ${index}
+    Comment    Log    将变量重新设定
+    Set Test Variable    \${Name}    ${EMPTY}
+    Log    ${Name}

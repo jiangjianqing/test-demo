@@ -17,3 +17,11 @@ Generate Date String
     ${year}    ${month}    ${day}    get time    year month day
     ${date_str}    set variable    ${year}-${month}-${day}
     [Return]    ${date_str}
+
+Find List Index
+    [Arguments]    ${element}    @{items}
+    ${index}    Set Variable    ${0}
+    :FOR    ${item}    In    @{items}
+    \    Run Keyword if    '${element}'=='${item}'    Return From keyword    ${index}
+    \    ${index}    Set Variable    ${index+1}
+    Return From keyword    -1
