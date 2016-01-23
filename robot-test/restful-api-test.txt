@@ -22,8 +22,9 @@ Entity Not Found
     GET    ${base_addr}
     ${response_status}=    Get Response Status
     Should Start With    ${response_status}    404
-    ${user}=    Get Response Body
-    ${test_status}    Set Variable    执行成功
+    ${body}=    Get Response Body
+    Should Be Valid Json    ${body}
+    [Return]    ${body}
 
 Add Entity
     [Arguments]    ${host}    ${site}    ${entity_name}    ${request_body}

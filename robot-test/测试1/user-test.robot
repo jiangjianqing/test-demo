@@ -9,10 +9,14 @@ ${user_addr}      usermanage/user
 
 *** Test Cases ***
 user_notfound
-    Entity Not Found    ${host}    ${site}    ${user_addr}    ${invalid_userid}
+    ${result}    Entity Not Found    ${host}    ${site}    ${user_addr}    ${invalid_userid}
+    ${key}    Get Json Value    ${result}    /key
+    Run Keyword If    ${key}<>${invalid_userid}    FAIL    查询的id与返回的key不相同
 
 user_found
-    Entity Found    ${host}    ${site}    ${user_addr}    1
+    ${body}    Entity Found    ${host}    ${site}    ${user_addr}    1
+    ${id}    Get Json Value    ${body}    /id
+    Run Keyword If    ${id}==0    Fail    id必须大于0
 
 user_add
     [Documentation]    使用常规的POST提交，标记为deprecated
