@@ -1,0 +1,27 @@
+*** Settings ***
+Library           HttpLibrary.HTTP
+Resource          ../restful-api-test.txt
+Variables         ../var.py
+
+*** Variables ***
+${invalid_id}     9999999
+${entity_addr}    usermanage/role
+
+*** Test Cases ***
+role_add_by_json
+    ${request_body}    Set Variable    {"role":"admin","available":1}
+    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
+    ${new_id}    Get Json Value    ${result}    /id
+
+generate_test_data
+    :FOR    ${i}    IN RANGE    30
+    \    ${request_body}    Set Variable    {"role":"admin${i}","available":1}
+    \    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
+    \    ${new_id}    Get Json Value    ${result}    /id
+
+Out Of PageRange
+    Out Of PageRange    ${host}    ${site}    ${entity_addr}    0
+    Out Of PageRange    ${host}    ${site}    ${entity_addr}    99999999
+
+Default Page
+    Default Page    ${host}    ${site}    ${entity_addr}

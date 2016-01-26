@@ -71,3 +71,29 @@ Delete Entity
     ${error_msg}    Run Keyword And Expect Error    *    Entity Found    ${host}    ${site}    ${entity_name}
     ...    ${entity_id}
     ${find}    Entity Not Found    ${host}    ${site}    ${entity_name}    ${entity_id}
+
+Out Of PageRange
+    [Arguments]    ${host}    ${site}    ${entity_name}    ${invalidPageNumber}
+    [Documentation]    page的要求是>0 and <maxPage
+    Create Http Context    ${host}
+    ${base_addr}    Set Variable    /${site}/${entity_name}?page=${invalidPageNumber}
+    Next Request May Not Succeed
+    Get    ${base_addr}
+    ${response_status}=    Get Response Status
+    Should Start With    ${response_status}    416
+    ${response_body}    Get Response Body
+    Log    ${response_body}
+
+Default Page
+    [Arguments]    ${host}    ${site}    ${entity_name}
+    [Documentation]    检测是否提供了默认分页功能
+    Create Http Context    ${host}
+    ${base_addr}    Set Variable    /${site}/${entity_name}
+    Get    ${base_addr}
+    ${response_status}=    Get Response Status
+    Should Start With    ${response_status}    200
+    ${response_body}    Get Response Body
+    Should Be Valid Json    ${response_body}
+    ${currentPage}    Get Json Value    ${response_body}    /currentPage
+    ${currentPage}    Convert To Integer    ${currentPage}
+    Should Be Equal    ${currentPage}    ${1}
