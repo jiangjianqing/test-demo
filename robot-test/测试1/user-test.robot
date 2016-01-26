@@ -34,5 +34,5 @@ user_add_by_json
     Set Suite Variable    ${new_user_id}
 
 user_delete
-    Variable Should Exist    ${new_user_id}    准备删除的UserID不存在
+    Variable Should Exist    ${new_user_id}    准备删除的ID不存在
     Delete Entity    ${host}    ${site}    ${entity_addr}    ${new_user_id}

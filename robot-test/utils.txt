@@ -1,3 +1,5 @@
+*** Settings ***
+
 *** Keywords ***
 Generate Random String
     [Arguments]    ${len}    ${charset}=    # 生成随机字符串
@@ -21,7 +23,7 @@ Generate Date String
 Find List Index
     [Arguments]    ${element}    @{items}
     ${index}    Set Variable    ${0}
-    :FOR    ${item}    In    @{items}
+    : FOR    ${item}    IN    @{items}
     \    Run Keyword if    '${element}'=='${item}'    Return From keyword    ${index}
     \    ${index}    Set Variable    ${index+1}
     Return From keyword    -1

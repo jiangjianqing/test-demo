@@ -1,5 +1,6 @@
 *** Settings ***
 Library           HttpLibrary.HTTP
+Library           String
 
 *** Keywords ***
 Entity Found
@@ -82,6 +83,7 @@ Out Of PageRange
     ${response_status}=    Get Response Status
     Should Start With    ${response_status}    416
     ${response_body}    Get Response Body
+    ${response_body}    Decode Bytes To String    ${response_body}    UTF-8
     Log    ${response_body}
 
 Default Page

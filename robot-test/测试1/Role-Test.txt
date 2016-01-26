@@ -11,10 +11,11 @@ ${entity_addr}    usermanage/role
 role_add_by_json
     ${request_body}    Set Variable    {"role":"admin","available":1}
     ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
-    ${new_id}    Get Json Value    ${result}    /id
+    ${new_role_id}    Get Json Value    ${result}    /id
+    Set Suite Variable    ${new_role_id}
 
 generate_test_data
-    :FOR    ${i}    IN RANGE    30
+    : FOR    ${i}    IN RANGE    30
     \    ${request_body}    Set Variable    {"role":"admin${i}","available":1}
     \    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
     \    ${new_id}    Get Json Value    ${result}    /id
@@ -25,3 +26,12 @@ Out Of PageRange
 
 Default Page
     Default Page    ${host}    ${site}    ${entity_addr}
+
+role_delete
+    Variable Should Exist    ${new_role_id}    准备删除的ID不存在
+    Delete Entity    ${host}    ${site}    ${entity_addr}    ${new_role_id}
+
+role_found
+    ${body}    Entity Found    ${host}    ${site}    ${entity_addr}    1
+    ${id}    Get Json Value    ${body}    /id
+    Run Keyword If    ${id}==0    Fail    id必须大于0
