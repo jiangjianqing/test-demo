@@ -24,8 +24,10 @@ user_add
     ${request_body}    Set Variable    username=中文测试&password=111111
     Add Entity    ${host}    ${site}    ${entity_addr}    ${request_body}
 
-用户名重复
-    Entity Replicated    ${host}    ${site}    ${entity_addr}    1
+user_duplicated
+    ${username}    Generate Random String    15
+    ${request_body}    Set Variable    {"username":"${username}","password":"test"}
+    Entity Duplicated    ${host}    ${site}    ${entity_addr}    ${request_body}
 
 user_add_by_json
     ${request_body}    Set Variable    {"username":"1123","password":456}

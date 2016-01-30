@@ -39,13 +39,14 @@ Add Entity
     POST    ${base_addr}
     ${response_status}=    Get Response Status
 
-Entity Replicated
-    [Arguments]    ${host}    ${site}    ${entity_name}    ${entity_id}
-    ${old_entity}    Entity Found    ${host}    ${site}    ${entity_name}    ${entity_id}
-    ${name}    Get Json Value    ${old_entity}    /username
-    ${password}    Get Json Value    ${old_entity}    /password
-    ${request_body}    Set Variable    {"username":${name},"password":${password}}
-    Add Entity By Json    ${host}    ${site}    ${entity_name}    ${request_body}
+Entity Duplicated
+    [Arguments]    ${host}    ${site}    ${entity_addr}    ${request_body}
+    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
+    ${new_id}    Get Json Value    ${result}    /id
+    Run Keyword If    ${new_id}<=${0}    FAIL    "新增user失败"
+    ${errormsg}    Run Keyword And Expect Error    *    Add Entity By Json    ${host}    ${site}    ${entity_addr}
+    ...    ${request_body}
+    Delete Entity    ${host}    ${site}    ${entity_addr}    ${new_id}
 
 Add Entity By Json
     [Arguments]    ${host}    ${site}    ${entity_name}    ${request_body}

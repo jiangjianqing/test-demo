@@ -35,3 +35,8 @@ role_found
     ${body}    Entity Found    ${host}    ${site}    ${entity_addr}    1
     ${id}    Get Json Value    ${body}    /id
     Run Keyword If    ${id}==0    Fail    id必须大于0
+
+role_duplicated
+    ${role}    Generate Random String    15
+    ${request_body}    Set Variable    {"role":"${role}","available":1}
+    Entity Duplicated    ${host}    ${site}    ${entity_addr}    ${request_body}
