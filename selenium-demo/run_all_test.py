@@ -48,8 +48,9 @@ class AbcClass:
 if __name__=="__main__":
 	report_path="./report"
 	test_all=AbcClass(report_path=report_path,report_title="xx平台 自动化测试报告",report_description="环境：linux    浏览器：firefox")
-	#filename=test_all.execute_all_test()
-	filename=test_all.lastest_report_filename()
+	#执行所有测试，必要时可以屏蔽
+	filename=test_all.execute_all_test()
+	#filename=test_all.lastest_report_filename()
 	print("report file="+filename)
 	#用csv保存email配置
 	#function.send_mail(filename,'./data/email_param.csv',title="xx平台 自动化测试报告"+"20160209")
