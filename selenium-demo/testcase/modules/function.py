@@ -5,6 +5,8 @@ from email.header import Header
 import smtplib
 from selenium import webdriver
 import os,sys
+from xml.dom import minidom
+import csv
 
 # 截图函数
 def snapshot_img(driver,file_name):
@@ -31,7 +33,34 @@ def snapshot_img(driver,file_name):
 	print(file_path)
 	driver.get_screenshot_as_file(file_path)
 
-def send_mail(report_html_file,title="xxxx自动化测试报告"):
+def send_mail(report_html_file,email_config_file,title="xxxx自动化测试报告"):
+	emaillist=[]
+	#用xml保存email配置
+	dom=minidom.parse(email_config_file)
+	root=dom.documentElement
+
+	email_server_elements=root.getElementsByTagName("email-server")
+	smtp_addr=email_server_elements[0].getAttribute("smtp")
+	email_addr=email_server_elements[0].getAttribute("username")
+	email_pwd=email_server_elements[0].getAttribute("password")
+
+	email_list_elements=root.getElementsByTagName("email")
+	for ele in email_list_elements:
+		emaillist.append(ele.firstChild.data)
+
+
+
+	'''
+	#用csv保存email配置
+	if(os.path.exists(email_config_file)):
+		f=open(email_config_file,'r')
+		emails=csv.reader(f)
+
+		for email in emails:
+			emaillist.append(email)
+		f.close()
+'''
+
 	'''将html report文件发送到指定邮箱'''
 	f=open(report_html_file,mode='rb')
 	mail_body=f.read()
@@ -40,10 +69,18 @@ def send_mail(report_html_file,title="xxxx自动化测试报告"):
 	msg=MIMEText(mail_body,'html','utf-8')
 	msg['Subject']=Header(title,'utf-8')
 	smtp=smtplib.SMTP()
-	smtp.connect("smtp.263.net")
-	#uiy87654
-	smtp.login("jianqingjiang@focusight.net","ztxs20150326")
-	smtp.sendmail("jianqingjiang@focusight.net","cz_jjq@qq.com",msg.as_string())
+	smtp.connect(smtp_addr)
+	smtp.login(email_addr,email_pwd)
+
+	'''
+	#用csv保存email配置
+			smtp_addr=email[0]
+		email_addr=email[1]
+		email_pwd=email[2]
+		smtp.connect(smtp_addr)
+	'''
+	for email in emaillist:
+		smtp.sendmail(email_addr,email,msg.as_string())
 	smtp.quit()
 	print("email has send out!")
 

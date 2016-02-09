@@ -51,4 +51,7 @@ if __name__=="__main__":
 	#filename=test_all.execute_all_test()
 	filename=test_all.lastest_report_filename()
 	print("report file="+filename)
-	function.send_mail(filename,title="xx平台 自动化测试报告"+"20160209")
+	#用csv保存email配置
+	#function.send_mail(filename,'./data/email_param.csv',title="xx平台 自动化测试报告"+"20160209")
+	#用xml保存email配置
+	function.send_mail(filename,'./data/email_config.xml',title="xx平台 自动化测试报告"+"20160209")
