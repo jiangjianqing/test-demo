@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<config>
-    <email-server smtp="smtp.263.net" username="jianqingjiang@focusight.net" password="ztxs20150326"/>
-    <email-list>
-        <email>cz_jjq@163.com</email>
-        <email>cz_jjq@qq.com</email>
-    </email-list>
-</config>
