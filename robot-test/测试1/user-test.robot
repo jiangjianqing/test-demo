@@ -41,3 +41,7 @@ user_delete
 
 Default Page
     Default Page    ${host}    ${site}    ${entity_addr}
+
+user_validate_failed
+    ${request_body}    Set Variable    {"username":"1","password":456}
+    ${result}    Entity Validate Failed    ${host}    ${site}    ${entity_addr}    ${request_body}
