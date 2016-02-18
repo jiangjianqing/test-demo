@@ -61,5 +61,5 @@ target/
 
 #report目录需要屏蔽
 report/
-#data/email_param.csv
+data/email_param.csv
 data/email_config.xml
