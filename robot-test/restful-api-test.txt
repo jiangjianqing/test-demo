@@ -64,6 +64,8 @@ Add Entity By Json
 Delete Entity
     [Arguments]    ${host}    ${site}    ${entity_name}    ${entity_id}
     Create Http Context    ${host}
+    comment    重要    通过evaluate去除了字符串两边的引号
+    ${entity_id}    evaluate    ${entity_id}
     ${base_addr}    Set Variable    /${site}/${entity_name}/${entity_id}
     DELETE    ${base_addr}
     ${response_status}=    Get Response Status
