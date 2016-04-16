@@ -45,3 +45,13 @@ Default Page
 user_validate_failed
     ${request_body}    Set Variable    {"username":"1","password":456}
     ${result}    Entity Validate Failed    ${host}    ${site}    ${entity_addr}    ${request_body}
+
+modify
+    ${random_name}    Generate Random String    8    ffewttyjtyutuyryr345
+    ${request_body}    Set Variable    {"username":"1123${random_name}","password":4567890}
+    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
+    ${new_user_id}    Get Json Value    ${result}    /id
+    ${extendinfo_jsonstr}    Stringify Json    {"extendInfo":{"address":"测试地址","testField":"这是我的测试字段"}}
+    ${request_body}    Set Variable    {"id":${new_user_id},"username":"12323423","password":"234234234","extendInfo":${extendinfo_jsonstr}}
+    ${result}    Modify Entity    ${host}    ${site}    ${entity_addr}    ${new_user_id}    ${request_body}
+    Delete Entity    ${host}    ${site}    ${entity_addr}    ${new_user_id}

@@ -117,3 +117,15 @@ Entity Validate Failed
     ${response_body}    Get Response Body
     Should Be Valid Json    ${response_body}
     [Return]    ${response_body}
+
+Modify Entity
+    [Arguments]    ${host}    ${site}    ${entity_name}    ${entity_id}    ${request_body}
+    [Documentation]    支持服务器端使用@RequestBody处理输入数据，可以减少代码量,要求request_body的格式为一个json字符串
+    Create Http Context    ${host}
+    ${base_addr}    Set Variable    /${site}/${entity_name}/${entity_id}
+    Set Request Header    Content-Type    application/json
+    Set Request Body    ${request_body}
+    PUT    ${base_addr}
+    ${response_status}=    Get Response Status
+    ${response_body}    Get Response Body
+    Should Be Valid Json    ${response_body}
