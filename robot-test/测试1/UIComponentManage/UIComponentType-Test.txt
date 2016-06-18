@@ -1,0 +1,33 @@
+*** Settings ***
+Library           HttpLibrary.HTTP
+Resource          ../../restful-api-test.txt
+Variables         ../../var.py
+Resource          ../../utils.txt
+
+*** Variables ***
+${entity_addr}    uicomponentmanage/uicomponenttype
+${invalid_id}     999999999
+
+*** Test Cases ***
+add
+    ${abc}    Generate Random String    8    ffewttyjtyutuyryr345
+    ${request_body}    Set Variable    {"name":"new uicomponenttype ${abc}","description":"自动化测试添加的内容"}
+    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
+    ${new_uicomponenttype_id}    Get Json Value    ${result}    /id
+    Set SuiteVariable    ${new_uicomponenttype_id}
+
+delete
+    Variable Should Exist    ${new_uicomponenttype_id}    准备删除的ID不存在
+    Delete Entity    ${host}    ${site}    ${entity_addr}    ${new_uicomponenttype_id}
+
+Default Page
+    Default Page    ${host}    ${site}    ${entity_addr}
+
+update
+    ${random_name}    Generate Random String    8    ffewttyjtyutuyryr345
+    ${request_body}    Set Variable    {"name":"new uicomponenttype ${random_name}","description":"自动化测试添加的内容"}
+    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
+    ${new_id}    Get Json Value    ${result}    /id
+    ${request_body}    Set Variable    {"name":"new uicompo${random_name}123","description":"update finish"}
+    ${result}    Modify Entity    ${host}    ${site}    ${entity_addr}    ${new_id}    ${request_body}
+    Delete Entity    ${host}    ${site}    ${entity_addr}    ${new_id}

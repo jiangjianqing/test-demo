@@ -1,0 +1,20 @@
+*** Settings ***
+Library           HttpLibrary.HTTP
+Resource          ../../restful-api-test.txt
+Variables         ../../var.py
+Resource          ../../utils.txt
+
+*** Variables ***
+${entity_addr}    uicomponentmanage/uicomponent
+${invalid_id}     99999999
+
+*** Test Cases ***
+Default Page
+    Default Page    ${host}    ${site}    ${entity_addr}
+
+add
+    ${abc}    Generate Random String    8    ffewttyjtyutuyryr345
+    ${request_body}    Set Variable    {"name":"new uicomponent ${abc}","componentTypeId":1}
+    ${result}    Add Entity By Json    ${host}    ${site}    ${entity_addr}    ${request_body}
+    ${new_uicomponent_id}    Get Json Value    ${result}    /id
+    Set Suite Variable    ${new_uicomponent_id}
