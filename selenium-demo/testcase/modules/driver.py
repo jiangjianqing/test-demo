@@ -13,7 +13,7 @@ def Browser(is_local=True,host='127.0.0.1:4444',browser_name='firefox'):
 
 		#用lambda表达式来模仿switch
 		drivers = {
-		  'firefox': lambda: webdriver.Firefox(),
+		  'firefox': lambda: webdriver.Chrome(),
 		  'b': lambda x: x + 7,
 		  'c': lambda x: x - 2
 		}
